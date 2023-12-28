@@ -4,6 +4,9 @@
 
 This Java-based To-Do project is designed to help users manage their tasks and stay organized. The application provides a simple and intuitive interface for adding, editing, and deleting tasks. It also includes features such as task prioritization, due dates, and category assignments to enhance task organization.
 
+## Roadmap
+
+Check out the [project roadmap](RoadMap.md) for a detailed plan on project
 ## Features
 
 - **Task Management:** Add, edit, and delete tasks easily.
