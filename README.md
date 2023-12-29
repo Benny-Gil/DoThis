@@ -29,3 +29,18 @@ Check out the [project roadmap](RoadMap.md) for a detailed plan on project
    ```bash
    git clone https://github.com/benny-gil/DoThis.git
    ```
+2. Compile the source code:
+   ```bash
+    javac DoThis.java
+    ```
+3. Run the application:
+   ```bash
+    java DoThis.java
+    ```
+### Usage
+- Launch the application and use the interactive console to manage your tasks.
+- Follow on-screen instructions for adding, editing, and deleting tasks.
+   
+## Contributing
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
+
