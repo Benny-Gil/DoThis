@@ -1,0 +1,5 @@
+GUI Improvements
+-List Pane locked size
+-Button Positions
+-App Icon
+-Colors and Themes*
