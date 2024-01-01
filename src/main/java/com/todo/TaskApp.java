@@ -1,32 +1,38 @@
 package com.todo;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class TaskApp {
+    private static final String TASKS_FILE = "tasklist/tasks.txt";
     private DefaultListModel<String> listModel;
     private JList<String> taskList;
-    private static final String TASKS_FILE = "tasklist/tasks.txt";
 
 
     public TaskApp() {
         JFrame frame = new JFrame("Task App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
-        frame.setLayout(new FlowLayout());
+        frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
 
         listModel = new DefaultListModel<>();
         taskList = new JList<>(listModel);
 
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+
         JButton addButton = new JButton("Add Task");
+        addButton.setToolTipText("Add a new task");
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,6 +45,7 @@ public class TaskApp {
         });
 
         JButton removeButton = new JButton("Remove Task");
+        removeButton.setToolTipText("Remove the selected task");
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,6 +58,7 @@ public class TaskApp {
         });
 
         JButton editButton = new JButton("Edit Task");
+        editButton.setToolTipText("Edit the selected task");
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,13 +73,25 @@ public class TaskApp {
             }
         });
 
-        frame.add(new JScrollPane(taskList));
-        frame.add(addButton);
-        frame.add(removeButton);
-        frame.add(editButton);
+        buttonPanel.add(addButton);
+        buttonPanel.add(removeButton);
+        buttonPanel.add(editButton);
+
+        frame.add(new JScrollPane(taskList), BorderLayout.CENTER);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.setVisible(true);
         loadTasks();
     }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new TaskApp();
+            }
+        });
+    }
+
     private void saveTasks() {
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(TASKS_FILE))) {
             for (int i = 0; i < listModel.getSize(); i++) {
@@ -97,14 +117,5 @@ public class TaskApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new TaskApp();
-            }
-        });
     }
 }
