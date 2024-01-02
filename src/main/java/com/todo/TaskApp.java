@@ -10,10 +10,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TaskApp {
     private static final String TASKS_FILE = "tasklist/tasks.txt";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DefaultListModel<Task> listModel;
     private final JList<Task> taskList;
 
@@ -69,17 +71,21 @@ public class TaskApp {
             public void actionPerformed(ActionEvent e) {
                 int selectedIndex = taskList.getSelectedIndex();
                 if (selectedIndex != -1) {
-                    String taskName = JOptionPane.showInputDialog(frame, "Enter Task Name:");
-                    String taskDescription = JOptionPane.showInputDialog(frame, "Enter Task Description:");
-                    String taskDueDateString = JOptionPane.showInputDialog(frame, "Enter Task Due Date (yyyy-mm-dd):");
-                    LocalDate taskDueDate = LocalDate.parse(taskDueDateString);
-                    String taskStatus = JOptionPane.showInputDialog(frame, "Enter Task Status:");
-                    String taskPriorityString = JOptionPane.showInputDialog(frame, "Enter Task Priority:");
-                    int taskPriority = Integer.parseInt(taskPriorityString);
+                    Task currentTask = listModel.getElementAt(selectedIndex);
+                    String taskName = JOptionPane.showInputDialog(frame, "Enter Task Name:", currentTask.getTaskName());
+                    taskName = (taskName != null && !taskName.isEmpty()) ? taskName : currentTask.getTaskName();
+                    String taskDescription = JOptionPane.showInputDialog(frame, "Enter Task Description:", currentTask.getTaskDescription());
+                    taskDescription = (taskDescription != null && !taskDescription.isEmpty()) ? taskDescription : currentTask.getTaskDescription();
+                    String taskDueDateString = JOptionPane.showInputDialog(frame, "Enter Task Due Date (yyyy-mm-dd):", currentTask.getTaskDueDate().format(formatter));
+                    LocalDate taskDueDate = (taskDueDateString != null && !taskDueDateString.isEmpty()) ? LocalDate.parse(taskDueDateString) : currentTask.getTaskDueDate();
+                    String taskStatus = JOptionPane.showInputDialog(frame, "Enter Task Status:", currentTask.getTaskStatus());
+                    taskStatus = (taskStatus != null && !taskStatus.isEmpty()) ? taskStatus : currentTask.getTaskStatus();
+                    String taskPriorityString = JOptionPane.showInputDialog(frame, "Enter Task Priority:", currentTask.getTaskPriority());
+                    int taskPriority = (taskPriorityString != null && !taskPriorityString.isEmpty()) ? Integer.parseInt(taskPriorityString) : currentTask.getTaskPriority();
                     Task task = new Task(taskName, taskDescription, taskDueDate, taskStatus, taskPriority);
                     listModel.set(selectedIndex, task);
+                    saveTasks();
                 }
-                saveTasks();
             }
         });
 
