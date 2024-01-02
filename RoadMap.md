@@ -16,21 +16,21 @@
 
 ## Task Class and Basic Functionality
 
-- [ ] **Define Task Class:**
+- [x] **Define Task Class:**
     - Create a `Task` class with fields like title, description, priority, due date, etc.
     - Implement constructors and accessor methods.
 
-- [ ] **Implement Task Management:**
+- [x] **Implement Task Management:**
     - Create a basic mechanism for adding tasks to a collection.
     - Implement a method to display all tasks.
 
 ## User Interface (Console)
 
-- [ ] **Console User Interface:**
+- [x] **Console User Interface:**
     - Design a simple console-based user interface.
     - Implement user input handling for adding, editing, and deleting tasks.
 
-- [ ] **Task CRUD Operations:**
+- [x] **Task CRUD Operations:**
     - Implement methods for editing and deleting tasks.
     - Ensure proper validation for user inputs.
 

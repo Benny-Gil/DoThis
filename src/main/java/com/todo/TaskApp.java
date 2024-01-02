@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 
 public class TaskApp {
     private static final String TASKS_FILE = "tasklist/tasks.txt";
-    private DefaultListModel<String> listModel;
-    private JList<String> taskList;
-
+    private final DefaultListModel<Task> listModel;
+    private final JList<Task> taskList;
 
     public TaskApp() {
         JFrame frame = new JFrame("Task App");
@@ -36,11 +36,16 @@ public class TaskApp {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String task = JOptionPane.showInputDialog(frame, "Enter Task");
-                if (task != null && !task.trim().isEmpty()) {
-                    listModel.addElement(task);
-                    saveTasks();
-                }
+                String taskName = JOptionPane.showInputDialog(frame, "Enter Task Name:");
+                String taskDescription = JOptionPane.showInputDialog(frame, "Enter Task Description:");
+                String taskDueDateString = JOptionPane.showInputDialog(frame, "Enter Task Due Date (yyyy-mm-dd):");
+                LocalDate taskDueDate = LocalDate.parse(taskDueDateString);
+                String taskStatus = JOptionPane.showInputDialog(frame, "Enter Task Status:");
+                String taskPriorityString = JOptionPane.showInputDialog(frame, "Enter Task Priority:");
+                int taskPriority = Integer.parseInt(taskPriorityString);
+                Task task = new Task(taskName, taskDescription, taskDueDate, taskStatus, taskPriority);
+                listModel.addElement(task);
+                saveTasks();
             }
         });
 
@@ -64,10 +69,15 @@ public class TaskApp {
             public void actionPerformed(ActionEvent e) {
                 int selectedIndex = taskList.getSelectedIndex();
                 if (selectedIndex != -1) {
-                    String task = JOptionPane.showInputDialog(frame, "Edit Task", listModel.get(selectedIndex));
-                    if (task != null && !task.trim().isEmpty()) {
-                        listModel.set(selectedIndex, task);
-                    }
+                    String taskName = JOptionPane.showInputDialog(frame, "Enter Task Name:");
+                    String taskDescription = JOptionPane.showInputDialog(frame, "Enter Task Description:");
+                    String taskDueDateString = JOptionPane.showInputDialog(frame, "Enter Task Due Date (yyyy-mm-dd):");
+                    LocalDate taskDueDate = LocalDate.parse(taskDueDateString);
+                    String taskStatus = JOptionPane.showInputDialog(frame, "Enter Task Status:");
+                    String taskPriorityString = JOptionPane.showInputDialog(frame, "Enter Task Priority:");
+                    int taskPriority = Integer.parseInt(taskPriorityString);
+                    Task task = new Task(taskName, taskDescription, taskDueDate, taskStatus, taskPriority);
+                    listModel.set(selectedIndex, task);
                 }
                 saveTasks();
             }
@@ -95,7 +105,8 @@ public class TaskApp {
     private void saveTasks() {
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(TASKS_FILE))) {
             for (int i = 0; i < listModel.getSize(); i++) {
-                writer.write(listModel.getElementAt(i));
+                Task task = listModel.getElementAt(i);
+                writer.write(task.getTaskName() + "," + task.getTaskDescription() + "," + task.getTaskDueDate() + "," + task.getTaskStatus() + "," + task.getTaskPriority());
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -112,7 +123,9 @@ public class TaskApp {
         try {
             List<String> lines = Files.readAllLines(path);
             for (String line : lines) {
-                listModel.addElement(line);
+                String[] parts = line.split(",");
+                Task task = new Task(parts[0], parts[1], LocalDate.parse(parts[2]), parts[3], Integer.parseInt(parts[4]));
+                listModel.addElement(task);
             }
         } catch (IOException e) {
             e.printStackTrace();

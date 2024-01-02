@@ -1,5 +1,2 @@
-GUI Improvements
--List Pane locked size
--Button Positions
--App Icon
--Colors and Themes*
+Task Name,Task Description,2024-01-02,Task Status,1
+Task Name,Task Description,2024-01-02,Task Status,1
