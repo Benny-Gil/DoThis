@@ -15,9 +15,9 @@ import java.util.List;
 
 public class TaskApp {
     private static final String TASKS_FILE = "tasklist/tasks.txt";
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DefaultListModel<Task> listModel;
     private final JList<Task> taskList;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public TaskApp() {
         JFrame frame = new JFrame("Task App");
